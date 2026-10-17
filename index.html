@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Desk Pet</title>
+<meta name="description" content="A tiny pixel pet that lives on your website. One line of code. It walks, naps, chases your cursor and loves being petted.">
+<meta property="og:title" content="Desk Pet — a tiny pixel pet for your website">
+<meta property="og:description" content="One line of code. It walks, naps, chases your cursor and loves being petted.">
+<meta property="og:image" content="https://sahil-zaini.github.io/desk-pet/preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%235a2d10' d='M3 5h1V3h1v1h1v1h4V4h1V3h1v2h1v6H3z'/%3E%3Cpath fill='%23f08c3a' d='M4 5h1v1h6V5h1v5H4z'/%3E%3Cpath fill='%231d1410' d='M5 7h1v1H5zm5 0h1v1h-1z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Figtree:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a calm sky page with a floor along the bottom edge, so the pets have somewhere to walk. */
+:root {
+  --sky: #eaf3ff;
+  --sky2: #f8fbff;
+  --panel: #ffffff;
+  --ink: #1d1d24;
+  --mute: #5f6475;
+  --line: #d9e1ee;
+  --accent: #f08c3a;
+  --accent-ink: #4a2208;
+  --floor: #8fce6b;
+  --floor2: #6fb34e;
+  --code: #1d1d24;
+  --code-ink: #f6f3ea;
+  --f-pixel: "Pixelify Sans", "Courier New", monospace;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --sky: #12172a; --sky2: #0c1020; --panel: #1a2035; --ink: #eef1fb; --mute: #9aa3bd; --line: #2b3350;
+  --accent: #ffa458; --accent-ink: #2a1203; --floor: #3e6b3a; --floor2: #2f5530; --code: #0a0d18; --code-ink: #e9edf8;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --sky: #12172a; --sky2: #0c1020; --panel: #1a2035; --ink: #eef1fb; --mute: #9aa3bd; --line: #2b3350;
+  --accent: #ffa458; --accent-ink: #2a1203; --floor: #3e6b3a; --floor2: #2f5530; --code: #0a0d18; --code-ink: #e9edf8;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: linear-gradient(var(--sky2), var(--sky)) fixed; background-color: var(--sky); color: var(--ink); font: 16px/1.6 var(--f-body); padding-bottom: 120px; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+button, input, select { font: inherit; color: inherit; }
+
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 48px; }
+.logo { font: 700 22px/1 var(--f-pixel); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.logo canvas { width: 40px; height: 30px; image-rendering: pixelated; }
+.top-links { display: flex; gap: 8px; }
+.pill { border: 2px solid var(--ink); background: var(--panel); border-radius: 10px; padding: 6px 12px; font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+.pill:active { transform: translate(2px, 2px); box-shadow: none; }
+
+.hero { display: grid; gap: 18px; margin-bottom: 56px; }
+.hero h1 { font: 700 clamp(40px, 8vw, 82px)/0.95 var(--f-pixel); letter-spacing: -0.01em; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.lede { font-size: 19px; color: var(--mute); max-width: 54ch; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { border: 2px solid var(--ink); border-radius: 12px; padding: 11px 18px; font-weight: 700; text-decoration: none; cursor: pointer; background: var(--panel); box-shadow: 3px 3px 0 var(--ink); display: inline-flex; gap: 8px; align-items: center; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn:active { transform: translate(3px, 3px); box-shadow: none; }
+.hint { font: 14px var(--f-mono); color: var(--mute); }
+
+section { margin-bottom: 56px; display: grid; gap: 18px; }
+section > h2 { font: 700 30px/1.1 var(--f-pixel); }
+.sub { color: var(--mute); max-width: 62ch; }
+
+/* adopt studio */
+.studio { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 18px; }
+@media (max-width: 820px) { .studio { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 2px solid var(--ink); border-radius: 16px; padding: 18px; box-shadow: 4px 4px 0 var(--ink); display: grid; gap: 16px; align-content: start; min-width: 0; }
+.label { font: 500 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.pets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.pet-opt { border: 2px solid var(--line); background: var(--sky2); border-radius: 12px; padding: 10px 6px 8px; cursor: pointer; display: grid; justify-items: center; gap: 4px; font-weight: 700; }
+.pet-opt canvas { width: 96px; max-width: 100%; height: auto; aspect-ratio: 4 / 3; image-rendering: pixelated; }
+.pet-opt[aria-pressed="true"] { border-color: var(--ink); background: var(--panel); box-shadow: 3px 3px 0 var(--ink); }
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.sw { border: 2px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 8px; cursor: pointer; background: var(--sky2); display: inline-flex; gap: 6px; align-items: center; font-size: 14px; font-weight: 600; text-transform: capitalize; }
+.sw i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ink); }
+.sw[aria-pressed="true"] { border-color: var(--ink); background: var(--panel); }
+.field { display: grid; gap: 6px; }
+.field input[type=text] { border: 2px solid var(--line); background: var(--sky2); border-radius: 10px; padding: 10px 12px; min-height: 44px; width: 100%; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.code { background: var(--code); color: var(--code-ink); border-radius: 12px; padding: 14px; font: 13px/1.6 var(--f-mono); overflow-x: auto; white-space: pre; margin: 0; }
+.code .a { color: #ffb86b; } .code .v { color: #9be39b; } .code .t { color: #8ab4ff; }
+.code-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* behaviours */
+.traits { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.trait { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; }
+.trait b { font: 700 17px/1.2 var(--f-pixel); }
+.trait span { color: var(--mute); font-size: 14px; }
+
+/* install */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.tab { border: 2px solid var(--line); background: var(--panel); border-radius: 10px; padding: 7px 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
+.tab[aria-selected="true"] { border-color: var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+.steps { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.steps ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+
+footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; color: var(--mute); font-size: 14px; border-top: 2px dashed var(--line); padding-top: 18px; }
+
+/* the floor the pets walk on */
+.floor { position: fixed; left: 0; right: 0; bottom: 0; height: calc(18px + env(safe-area-inset-bottom, 0px)); background: repeating-linear-gradient(90deg, var(--floor) 0 16px, var(--floor2) 16px 32px); border-top: 3px solid var(--ink); z-index: 1; }
+.toast { position: fixed; left: 50%; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--panel); border-radius: 10px; padding: 10px 16px; font-weight: 600; z-index: 2147483600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="./"><canvas id="logo" width="32" height="24" aria-hidden="true"></canvas>Desk Pet</a>
+    <div class="top-links">
+      <button class="pill" id="theme" type="button" aria-label="Switch light or dark theme">☾ / ☀</button>
+      <a class="pill" href="https://github.com/sahil-zaini/desk-pet" target="_blank" rel="noopener">★ GitHub</a>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Adopt a tiny pet<br>for <em>your website.</em></h1>
+    <p class="lede">One line of code and a pixel cat, camel or dog moves into the bottom of your site. It walks around, naps when nobody's looking, chases your cursor and loves being petted.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#adopt">Adopt yours ↓</a>
+      <a class="btn" href="https://github.com/sahil-zaini/desk-pet" target="_blank" rel="noopener">★ Star on GitHub</a>
+    </div>
+    <p class="hint">👇 Psst, two of them already live here. Click one, or pick it up and drop it.</p>
+  </div>
+
+  <section id="adopt">
+    <h2>Adopt</h2>
+    <p class="sub">Choose a pet, give it a name, then copy the code into your website. Press <b>Try it here</b> to see it on this page first.</p>
+    <div class="studio">
+      <div class="card">
+        <div class="field"><span class="label">Pet</span><div class="pets" id="pets"></div></div>
+        <div class="field"><span class="label">Colour</span><div class="swatches" id="swatches"></div></div>
+        <div class="row">
+          <div class="field"><label class="label" for="name">Name</label><input type="text" id="name" maxlength="20" value="Habibi" placeholder="Optional"></div>
+          <div class="field"><label class="label" for="size">Size: <span id="size-val">3</span>×</label><input type="range" id="size" min="2" max="5" value="3"></div>
+        </div>
+        <div class="field"><label class="label" for="say">What it says (optional, separate with |)</label><input type="text" id="say" maxlength="160" placeholder="Welcome to my site!|Check out my work"></div>
+        <button class="btn primary" id="try" type="button">✨ Try it here</button>
+      </div>
+      <div class="card">
+        <span class="label">Your code: paste it before &lt;/body&gt;</span>
+        <pre class="code" id="code"></pre>
+        <div class="code-actions">
+          <button class="btn primary" id="copy" type="button">📋 Copy code</button>
+        </div>
+        <p class="sub" style="font-size:14px">Works on any website: plain HTML, WordPress, Shopify, Wix (custom code), React, Next.js. No sign-up and no tracking, just one small 20 KB script.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it does</h2>
+    <div class="traits">
+      <div class="trait"><b>🚶 Wanders</b><span>Strolls along the bottom of the page and turns around at the edges.</span></div>
+      <div class="trait"><b>💖 Loves pets</b><span>Click it for hearts and a happy jump.</span></div>
+      <div class="trait"><b>✋ Can be carried</b><span>Drag it anywhere and let go. It drops back down to the floor.</span></div>
+      <div class="trait"><b>👀 Curious</b><span>Move your cursor near the bottom and it walks over to see.</span></div>
+      <div class="trait"><b>😴 Naps</b><span>After 30 seconds with no activity it curls up and sleeps (zzz). It wakes up when you come close.</span></div>
+      <div class="trait"><b>💬 Talks</b><span>Says little things now and then, or your own lines.</span></div>
+      <div class="trait"><b>⤴ Jumps</b><span>Double-click it to make it jump.</span></div>
+      <div class="trait"><b>♿ Polite</b><span>If the visitor prefers reduced motion, it just sits and naps. It never blocks clicks on your page.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Install</h2>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" aria-selected="true" data-t="html">HTML</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="wp">WordPress</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="shopify">Shopify</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="react">React / Next.js</button>
+    </div>
+    <div class="steps" id="steps"></div>
+  </section>
+
+  <footer>
+    <span>Made by <a href="https://github.com/sahil-zaini" target="_blank" rel="noopener">Sahil Zaini</a> · MIT licence · free forever</span>
+    <span>Designed &amp; Developed by Sahil Zaini / Zaini Developers · Powered by YCS Trust</span>
+  </footer>
+</div>
+<div class="floor" aria-hidden="true"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="pet.js" data-auto="false"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SRC = "https://sahil-zaini.github.io/desk-pet/pet.js";
+  var SW = {
+    cat: { ginger: "#f08c3a", black: "#2b2b36", white: "#f6f4ef", grey: "#8e95a6" },
+    camel: { sand: "#dba564" },
+    dog: { brown: "#9b6235", golden: "#e3a94a", husky: "#6d7482" }
+  };
+  var DEFAULT_NAME = { cat: "Mishmish", camel: "Habibi", dog: "Biscuit" };
+  var FLOOR = 18;
+  var cfg = { pet: "camel", color: "sand", name: "Habibi", size: 3, say: "" };
+
+  function toast(t) { var el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, 2000); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  // pet picker
+  var pets = $("pets");
+  ["cat", "camel", "dog"].forEach(function (k) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "pet-opt"; b.dataset.pet = k;
+    var c = document.createElement("canvas"); c.width = 32; c.height = 24;
+    DeskPet._paint(c, k, Object.keys(SW[k])[0], "idle", 0);
+    b.appendChild(c); b.appendChild(document.createTextNode(k[0].toUpperCase() + k.slice(1)));
+    pets.appendChild(b);
+  });
+  pets.addEventListener("click", function (e) {
+    var b = e.target.closest(".pet-opt"); if (!b) return;
+    var oldDefault = DEFAULT_NAME[cfg.pet];
+    cfg.pet = b.dataset.pet; cfg.color = Object.keys(SW[cfg.pet])[0];
+    if (!$("name").value || $("name").value === oldDefault) { $("name").value = DEFAULT_NAME[cfg.pet]; cfg.name = DEFAULT_NAME[cfg.pet]; }
+    sync();
+  });
+  $("swatches").addEventListener("click", function (e) {
+    var b = e.target.closest(".sw"); if (!b) return; cfg.color = b.dataset.c; sync();
+  });
+  $("name").addEventListener("input", function () { cfg.name = this.value.trim(); sync(); });
+  $("say").addEventListener("input", function () { cfg.say = this.value.trim(); sync(); });
+  $("size").addEventListener("input", function () { cfg.size = +this.value; $("size-val").textContent = this.value; sync(); });
+
+  function sync() {
+    [].forEach.call(pets.children, function (b) {
+      b.setAttribute("aria-pressed", b.dataset.pet === cfg.pet);
+      DeskPet._paint(b.querySelector("canvas"), b.dataset.pet, b.dataset.pet === cfg.pet ? cfg.color : Object.keys(SW[b.dataset.pet])[0], "idle", 0);
+    });
+    $("swatches").innerHTML = Object.keys(SW[cfg.pet]).map(function (c) {
+      return '<button type="button" class="sw" data-c="' + c + '" aria-pressed="' + (c === cfg.color) + '"><i style="background:' + SW[cfg.pet][c] + '"></i>' + c + "</button>";
+    }).join("");
+    var attrs = [["src", SRC], ["data-pet", cfg.pet]];
+    if (Object.keys(SW[cfg.pet]).length > 1) attrs.push(["data-color", cfg.color]);
+    if (cfg.name) attrs.push(["data-name", cfg.name]);
+    if (cfg.size !== 3) attrs.push(["data-size", String(cfg.size)]);
+    if (cfg.say) attrs.push(["data-say", cfg.say]);
+    var plain = "<script " + attrs.map(function (a) { return a[0] + '="' + a[1].replace(/"/g, "&quot;") + '"'; }).join("\n        ") + "\n        defer></" + "script>";
+    $("code").dataset.plain = plain;
+    $("code").innerHTML = '<span class="t">&lt;script</span> ' + attrs.map(function (a) { return '<span class="a">' + a[0] + '</span>=<span class="v">"' + esc(a[1]) + '"</span>'; }).join("\n        ") + '\n        <span class="a">defer</span><span class="t">&gt;&lt;/script&gt;</span>';
+    renderSteps();
+  }
+
+  $("try").addEventListener("click", function () {
+    DeskPet.removeAll();
+    DeskPet.spawn({ pet: cfg.pet, color: cfg.color, name: cfg.name, size: cfg.size, say: cfg.say, bottom: FLOOR });
+    toast((cfg.name || "Your pet") + " moved in. Look down 👇");
+  });
+  $("copy").addEventListener("click", function () {
+    var t = $("code").dataset.plain;
+    var ok = function () { toast("Code copied"); };
+    var fail = function () { var r = document.createRange(); r.selectNodeContents($("code")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected, press Ctrl+C"); };
+    try { navigator.clipboard.writeText(t).then(ok, fail); } catch (e) { fail(); }
+  });
+
+  // install tabs
+  var tab = "html";
+  $("tabs").addEventListener("click", function (e) {
+    var b = e.target.closest(".tab"); if (!b) return; tab = b.dataset.t;
+    [].forEach.call(this.children, function (x) { x.setAttribute("aria-selected", x === b); });
+    renderSteps();
+  });
+  function renderSteps() {
+    var code = esc($("code").dataset.plain || "");
+    var S = {
+      html: "<ol><li>Copy your code above.</li><li>Open your HTML file and paste it just before <code>&lt;/body&gt;</code>.</li><li>Save and refresh. Your pet appears at the bottom.</li></ol>",
+      wp: "<ol><li>Install the free plugin <b>WPCode</b> (or “Insert Headers and Footers”).</li><li>Go to <b>Code Snippets → Header &amp; Footer</b> and paste your code into <b>Footer</b>.</li><li>Save. Your pet now lives on every page.</li></ol>",
+      shopify: "<ol><li><b>Online Store → Themes → … → Edit code</b>.</li><li>Open <code>layout/theme.liquid</code>.</li><li>Paste your code just before <code>&lt;/body&gt;</code> and click <b>Save</b>.</li></ol>",
+      react: "<ol><li>Add this to your root layout (Next.js <code>app/layout.tsx</code> or React <code>App</code>):</li></ol><pre class='code'>import Script from \"next/script\";\n\n&lt;Script src=\"" + SRC + "\"\n        data-pet=\"" + esc(cfg.pet) + "\"" + (cfg.name ? "\n        data-name=\"" + esc(cfg.name) + "\"" : "") + "\n        strategy=\"afterInteractive\" /&gt;</pre><p class='sub' style='font-size:14px'>Plain React: add the <code>&lt;script&gt;</code> tag above to <code>public/index.html</code>.</p>"
+    };
+    $("steps").innerHTML = S[tab];
+  }
+
+  // theme
+  function applyTheme(t) { if (t) document.documentElement.setAttribute("data-theme", t); else document.documentElement.removeAttribute("data-theme"); }
+  try { applyTheme(localStorage.getItem("deskpet-theme")); } catch (e) {}
+  $("theme").addEventListener("click", function () {
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur === "dark" || (!cur && matchMedia("(prefers-color-scheme: dark)").matches);
+    applyTheme(dark ? "light" : "dark");
+    try { localStorage.setItem("deskpet-theme", dark ? "light" : "dark"); } catch (e) {}
+  });
+
+  // logo + two residents
+  DeskPet._paint($("logo"), "cat", "ginger", "idle", 0);
+  sync();
+  DeskPet.spawn({ pet: "camel", name: "Habibi", bottom: FLOOR });
+  DeskPet.spawn({ pet: "cat", color: "ginger", name: "Mishmish", bottom: FLOOR });
+})();
+</script>
+</body>
+</html>
