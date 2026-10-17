@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Desk Pet",
+  "version": "2.0.0",
+  "description": "A tiny pixel cat, dog or camel that lives on every website you visit. It climbs headings, sits on selected text and chases a laser.",
+  "author": "Sahil Zaini / Zaini Developers",
+  "homepage_url": "https://sahil-zaini.github.io/desk-pet/",
+  "icons": { "16": "icon16.png", "32": "icon32.png", "48": "icon48.png", "128": "icon128.png" },
+  "action": { "default_title": "Desk Pet", "default_popup": "popup.html", "default_icon": { "16": "icon16.png", "32": "icon32.png" } },
+  "permissions": ["storage"],
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*", "file:///*"],
+    "js": ["pet.js", "start.js"],
+    "run_at": "document_idle",
+    "all_frames": false
+  }]
+}

@@ -110,6 +110,17 @@ DeskPet.removeAll();
 
 Add `data-auto="false"` to the script tag if you only want to use the API.
 
+## 🧩 Browser extension (pet on every website)
+
+The `extension/` folder is a Chrome / Edge extension. It puts your pet on every site, including sites that block outside scripts.
+
+1. Download `desk-pet-extension.zip` from [Releases](https://github.com/Sahil-Zaini/desk-pet/releases/latest) and unzip it.
+2. Open `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode**.
+3. Click **Load unpacked** and choose the unzipped folder.
+4. Click the 🐾 icon in the toolbar to pick your pet, colour, outfit and size, bring a friend, or hide it on a site.
+
+`extension/pet.js` is a copy of the main `pet.js`. Copy it again after you change the main one.
+
 ## 🖥️ Desktop app
 
 The same pets, now on your computer, plus a break buddy.

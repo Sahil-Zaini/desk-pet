@@ -1,0 +1,41 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+  :root{--bg:#141826;--panel:#1d2335;--ink:#eef1fb;--mute:#97a0bb;--line:#2e3652;--accent:#ffa458}
+  *{box-sizing:border-box} body{margin:0;width:300px;background:var(--bg);color:var(--ink);font:13px/1.4 "Segoe UI",system-ui,sans-serif}
+  header{display:flex;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+  header canvas{width:64px;height:62px;image-rendering:pixelated}
+  h1{margin:0;font:700 17px "Courier New",monospace} header p{margin:2px 0 0;color:var(--mute);font-size:12px}
+  .wrap{padding:12px 14px;display:grid;gap:10px}
+  label{display:grid;gap:3px;color:var(--mute);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+  select,input[type=text]{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px;width:100%;text-transform:none;letter-spacing:0}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .chk{display:flex;gap:8px;align-items:center;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)}
+  input[type=checkbox],input[type=range]{accent-color:var(--accent)}
+  .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  button{font:600 13px inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:8px;cursor:pointer}
+  button.main{background:var(--accent);color:#2a1203;border:0}
+  .tip{color:var(--mute);font-size:11.5px;margin:0} .tip b{color:var(--ink)}
+  footer{padding:8px 14px 12px;color:var(--mute);font-size:10.5px;border-top:1px solid var(--line)} a{color:var(--accent)}
+</style></head><body>
+<header><canvas id="pv" width="32" height="31"></canvas><div><h1>Desk Pet</h1><p>A tiny pet on every website</p></div></header>
+<div class="wrap">
+  <label class="chk"><input type="checkbox" id="on"> Pet is on</label>
+  <div class="row">
+    <label>Animal<select id="pet"><option value="cat">Cat</option><option value="dog">Dog</option><option value="camel">Camel</option></select></label>
+    <label>Colour<select id="color"></select></label>
+  </div>
+  <div class="row">
+    <label>Name<input type="text" id="name" maxlength="20"></label>
+    <label>Outfit<select id="outfit"><option value="auto">Auto</option><option value="none">None</option><option value="santa">Santa</option><option value="party">Party</option><option value="crown">Crown</option><option value="uae">UAE flag</option><option value="ramadan">Lantern</option><option value="witch">Witch</option></select></label>
+  </div>
+  <label>Size <input type="range" id="size" min="2" max="5"></label>
+  <label class="chk"><input type="checkbox" id="climb"> Climb &amp; jump on page text</label>
+  <label class="chk"><input type="checkbox" id="two"> Bring a friend 👋</label>
+  <label class="chk"><input type="checkbox" id="site"> Hide on <b id="host" style="margin-left:4px">this site</b></label>
+  <div class="btns"><button id="feed">🍖 Feed</button><button id="party" class="main">🎉 Party</button></div>
+  <p class="tip">On any page: <b>select text</b> · hold <b>Shift</b> for laser · <b>Alt+click</b> for food · <b>drag</b> to throw</p>
+</div>
+<footer>Designed &amp; Developed by Sahil Zaini / Zaini Developers · Powered by YCS Trust · <a href="https://sahil-zaini.github.io/desk-pet/" target="_blank">website</a></footer>
+<script src="pet.js" data-auto="false"></script>
+<script src="popup.js"></script>
+</body></html>
