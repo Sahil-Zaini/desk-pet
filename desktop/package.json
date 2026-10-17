@@ -1,0 +1,96 @@
+{
+  "name": "desk-pet",
+  "productName": "Desk Pet",
+  "version": "2.0.0",
+  "description": "A tiny pixel pet for your desktop: walks on your taskbar and windows, reminds you to take breaks, drink water and rest your eyes.",
+  "main": "main.js",
+  "author": "Sahil Zaini <info@zainidevelopers.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/sahil-zaini/desk-pet",
+  "scripts": {
+    "sync": "node -e \"require('fs').copyFileSync('../pet.js','renderer/pet.js')\"",
+    "start": "npm run sync && electron .",
+    "dist": "npm run sync && electron-builder",
+    "dist:win": "npm run sync && electron-builder --win",
+    "dist:mac": "npm run sync && electron-builder --mac",
+    "dist:linux": "npm run sync && electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.zainidevelopers.deskpet",
+    "productName": "Desk Pet",
+    "copyright": "\u00a9 Sahil Zaini / Zaini Developers",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "assets/**",
+      "build/icon.png",
+      "build/tray.png"
+    ],
+    "asarUnpack": [
+      "assets/**"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Desk Pet",
+      "artifactName": "DeskPet-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "DeskPet-Portable-${version}.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.lifestyle",
+      "icon": "build/icon.png",
+      "artifactName": "DeskPet-${version}-mac.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility",
+      "icon": "build/icon.png",
+      "artifactName": "DeskPet-${version}-linux.${ext}"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Sahil-Zaini",
+      "repo": "desk-pet",
+      "releaseType": "release"
+    }
+  }
+}

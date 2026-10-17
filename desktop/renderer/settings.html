@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+<title>Desk Pet settings</title>
+<style>
+  :root { --bg: #f5f7fb; --panel: #fff; --ink: #1d1d24; --mute: #5f6475; --line: #dde3ee; --accent: #f08c3a; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #12162a; --panel: #1a2035; --ink: #eef1fb; --mute: #9aa3bd; --line: #2b3350; --accent: #ffa458; color-scheme: dark; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif; }
+  .wrap { padding: 20px 20px 90px; display: grid; gap: 14px; max-width: 560px; margin: 0 auto; }
+  header { display: flex; align-items: center; gap: 14px; }
+  header canvas { width: 96px; height: 93px; image-rendering: pixelated; }
+  h1 { margin: 0; font: 700 22px/1.1 "Courier New", monospace; }
+  header p { margin: 2px 0 0; color: var(--mute); }
+  fieldset { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 14px 14px; margin: 0; display: grid; gap: 10px; }
+  legend { font-weight: 700; padding: 0 6px; }
+  label { display: grid; gap: 4px; color: var(--mute); font-size: 13px; }
+  .inline { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  input[type=text], input[type=number], select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; width: 100%; }
+  input[type=checkbox], input[type=radio], input[type=range] { accent-color: var(--accent); }
+  .hint { color: var(--mute); font-size: 12px; margin: 0; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+  button { font: 600 14px inherit; border: 0; border-radius: 10px; padding: 10px 20px; background: var(--accent); color: #2a1203; cursor: pointer; }
+  .saved { color: var(--mute); }
+  a { color: var(--accent); cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <canvas id="preview" width="32" height="31"></canvas>
+    <div><h1>Desk Pet</h1><p>Your little desktop buddy. It also reminds you to take care of yourself.</p></div>
+  </header>
+
+  <fieldset>
+    <legend>Pet</legend>
+    <div class="grid2">
+      <label>Animal<select id="kind"><option value="cat">Cat</option><option value="camel">Camel</option><option value="dog">Dog</option></select></label>
+      <label>Colour<select id="color"></select></label>
+    </div>
+    <div class="grid2">
+      <label>Name<input type="text" id="name" maxlength="20"></label>
+      <label>Outfit<select id="outfit">
+        <option value="auto">Automatic (Ramadan, Eid, National Day…)</option><option value="none">None</option><option value="santa">Santa hat</option>
+        <option value="party">Party hat</option><option value="crown">Crown</option><option value="uae">UAE flag</option><option value="ramadan">Ramadan lantern</option><option value="witch">Witch hat</option></select></label>
+    </div>
+    <label><span>Size: <b id="sizeVal"></b>×</span><input type="range" id="size" min="2" max="5"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Behaviour</legend>
+    <label class="inline"><input type="checkbox" id="climb"> Climb and jump onto open windows</label>
+    <p class="hint">Windows only for now. On macOS and Linux the pet walks along the dock or taskbar.</p>
+    <label class="inline"><input type="checkbox" id="sleepIdle"> Nap when I'm away from the computer</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Breaks ⏸️</legend>
+    <label class="inline"><input type="checkbox" id="bOn"> Remind me to take breaks</label>
+    <div class="grid2">
+      <label>Every (minutes)<input type="number" id="bEvery" min="5" max="240"></label>
+      <label>Break length (minutes)<input type="number" id="bLen" min="1" max="60"></label>
+    </div>
+    <label class="inline"><input type="radio" name="mode" value="soft" id="soft"> Soft: I can snooze or skip</label>
+    <label class="inline"><input type="radio" name="mode" value="strict" id="strict"> Strict: the screen stays covered until the break is over</label>
+    <p class="hint">Strict mode can't be closed normally. Your computer can still always be unlocked with Ctrl+Alt+Del, so you're never stuck.</p>
+    <label>Snooze for (minutes)<input type="number" id="bSnooze" min="1" max="30"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Health reminders</legend>
+    <div class="grid2">
+      <label class="inline"><input type="checkbox" id="wOn"> 💧 Drink water</label>
+      <label>every (minutes)<input type="number" id="wEvery" min="10" max="240"></label>
+    </div>
+    <div class="grid2">
+      <label class="inline"><input type="checkbox" id="eOn"> 👀 Rest eyes (20-20-20)</label>
+      <label>every (minutes)<input type="number" id="eEvery" min="10" max="120"></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Focus sessions 🍅</legend>
+    <div class="grid2">
+      <label>Focus (minutes)<input type="number" id="fWork" min="5" max="120"></label>
+      <label>Then rest (minutes)<input type="number" id="fRest" min="1" max="30"></label>
+    </div>
+    <p class="hint">Start one from the tray icon. The pet naps quietly in the corner while you work.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Startup</legend>
+    <label class="inline"><input type="checkbox" id="auto"> Start Desk Pet when I log in</label>
+  </fieldset>
+
+  <p class="hint">Desk Pet v2 · MIT · <a id="site">Put Desk Pet on your website</a> · Designed &amp; Developed by Sahil Zaini / Zaini Developers · Powered by YCS Trust</p>
+</div>
+<div class="bar"><span class="saved" id="saved"></span><button id="save">Save</button></div>
+
+<script src="pet.js" data-auto="false"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var NAMES = { cat: "Mishmish", camel: "Habibi", dog: "Biscuit" };
+  var S;
+  function colors() {
+    var list = DeskPet.colors[$("kind").value], cur = $("color").value;
+    $("color").innerHTML = list.map(function (c) { return "<option value='" + c + "'>" + c[0].toUpperCase() + c.slice(1) + "</option>"; }).join("");
+    if (list.indexOf(cur) >= 0) $("color").value = cur;
+  }
+  function preview() {
+    var o = $("outfit").value === "auto" ? DeskPet.autoOutfit() : $("outfit").value;
+    DeskPet._paint($("preview"), $("kind").value, $("color").value, "idle", 0, o);
+    $("sizeVal").textContent = $("size").value;
+  }
+  deskpet.getSettings().then(function (s) {
+    S = s;
+    $("kind").value = s.pet; colors(); $("color").value = s.color; $("name").value = s.name || ""; $("outfit").value = s.outfit || "auto"; $("size").value = s.size || 3;
+    $("climb").checked = s.climbWindows; $("sleepIdle").checked = s.sleepWhenIdle;
+    $("bOn").checked = s.breaks.enabled; $("bEvery").value = s.breaks.every; $("bLen").value = s.breaks.length; $("bSnooze").value = s.breaks.snooze;
+    $(s.breaks.mode === "strict" ? "strict" : "soft").checked = true;
+    $("wOn").checked = s.water.enabled; $("wEvery").value = s.water.every; $("eOn").checked = s.eyes.enabled; $("eEvery").value = s.eyes.every;
+    $("fWork").value = s.focus.work; $("fRest").value = s.focus.rest; $("auto").checked = !!s.autostart;
+    preview();
+  });
+  $("kind").addEventListener("change", function () {
+    var n = $("name").value; if (!n || Object.values(NAMES).indexOf(n) >= 0) $("name").value = NAMES[this.value];
+    colors(); preview();
+  });
+  ["color", "outfit", "size"].forEach(function (id) { $(id).addEventListener("input", preview); });
+  $("site").addEventListener("click", function () { deskpet.openUrl("https://sahil-zaini.github.io/desk-pet/"); });
+  function num(id, lo, hi, def) { var v = parseInt($(id).value, 10); return isNaN(v) ? def : Math.max(lo, Math.min(hi, v)); }
+  $("save").addEventListener("click", function () {
+    var next = {
+      pet: $("kind").value, color: $("color").value, name: $("name").value.trim(), outfit: $("outfit").value, size: +$("size").value,
+      climbWindows: $("climb").checked, sleepWhenIdle: $("sleepIdle").checked, autostart: $("auto").checked,
+      breaks: { enabled: $("bOn").checked, every: num("bEvery", 5, 240, 50), length: num("bLen", 1, 60, 5), mode: $("strict").checked ? "strict" : "soft", snooze: num("bSnooze", 1, 30, 5) },
+      water: { enabled: $("wOn").checked, every: num("wEvery", 10, 240, 60) },
+      eyes: { enabled: $("eOn").checked, every: num("eEvery", 10, 120, 20) },
+      focus: { work: num("fWork", 5, 120, 25), rest: num("fRest", 1, 30, 5) }
+    };
+    deskpet.saveSettings(next).then(function () { $("saved").textContent = "Saved ✓"; setTimeout(function () { $("saved").textContent = ""; }, 2000); });
+  });
+})();
+</script>
+</body>
+</html>

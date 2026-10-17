@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+<title>Desk Pet</title>
+<style>html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }</style>
+</head>
+<body>
+<script src="pet.js" data-auto="false"></script>
+<script>
+(function () {
+  var cfg = null, platforms = [], pet = null, dragging = false, over = false;
+  function spawn() {
+    DeskPet.removeAll();
+    pet = DeskPet.spawn({
+      pet: cfg.pet, color: cfg.color, name: cfg.name, size: cfg.size, outfit: cfg.outfit, credit: false,
+      platforms: function () { return platforms; },
+      floor: function () { return cfg.floor; },
+      onHover: function (o) { over = o; if (!dragging) deskpet.hover(o); },
+      onDrag: function (d) { dragging = d; deskpet.hover(d || over); }
+    });
+  }
+  deskpet.onConfig(function (c) { cfg = c; spawn(); });
+  deskpet.onPlatforms(function (list) {
+    // keep only window tops with room above them for the pet
+    platforms = (list || []).filter(function (p) { return p.y > 110 && p.y < cfg.floor - 40; });
+  });
+  deskpet.onCommand(function (c) {
+    if (!pet) return;
+    switch (c.type) {
+      case "say": pet.say(c.text, c.ms); break;
+      case "sleep": pet.sleep(); break;
+      case "wake": pet.wake(); if (c.say) pet.say(c.say, 2000); break;
+      case "center": pet.wake(); pet.moveTo(innerWidth / 2); pet.say(c.say, c.ms || 6000); break;
+      case "celebrate": pet.celebrate(); if (c.say) setTimeout(function () { pet.say(c.say, 2200); }, 400); break;
+      case "feed": pet.feed(); pet.say("yum! 😋", 1500); break;
+      case "focus": pet.say(c.say, 2500); pet.moveTo(innerWidth - 140); setTimeout(function () { pet.sleep(c.minutes * 60000); }, 4500); break;
+    }
+  });
+})();
+</script>
+</body>
+</html>

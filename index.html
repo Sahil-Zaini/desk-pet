@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Desk Pet</title>
-<meta name="description" content="A tiny pixel pet that lives on your website. One line of code. It walks, naps, chases your cursor and loves being petted.">
+<meta name="description" content="A tiny pixel pet that lives on your website and your desktop. It climbs your headings, jumps between paragraphs, sits on the text you select, chases a laser and reminds you to take breaks.">
 <meta property="og:title" content="Desk Pet — a tiny pixel pet for your website">
 <meta property="og:description" content="One line of code. It walks, naps, chases your cursor and loves being petted.">
 <meta property="og:image" content="https://sahil-zaini.github.io/desk-pet/preview.png">
@@ -88,6 +88,9 @@ section > h2 { font: 700 30px/1.1 var(--f-pixel); }
 .sw i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--ink); }
 .sw[aria-pressed="true"] { border-color: var(--ink); background: var(--panel); }
 .field { display: grid; gap: 6px; }
+.sel { border: 2px solid var(--line); background: var(--sky2); border-radius: 10px; padding: 9px 10px; min-height: 44px; width: 100%; }
+.check { display: flex; gap: 8px; align-items: center; min-height: 44px; font-weight: 600; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
 .field input[type=text] { border: 2px solid var(--line); background: var(--sky2); border-radius: 10px; padding: 10px 12px; min-height: 44px; width: 100%; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .row { grid-template-columns: 1fr; } }
@@ -128,12 +131,12 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
 
   <div class="hero">
     <h1>Adopt a tiny pet<br>for <em>your website.</em></h1>
-    <p class="lede">One line of code and a pixel cat, camel or dog moves into the bottom of your site. It walks around, naps when nobody's looking, chases your cursor and loves being petted.</p>
+    <p class="lede">One line of code and a pixel cat, camel or dog moves into your site. It climbs onto your headings, jumps from paragraph to paragraph, sits on the text you select, chases a laser pointer and naps when nobody's looking. There's a desktop version too, and it reminds you to take breaks.</p>
     <div class="hero-actions">
       <a class="btn primary" href="#adopt">Adopt yours ↓</a>
       <a class="btn" href="https://github.com/sahil-zaini/desk-pet" target="_blank" rel="noopener">★ Star on GitHub</a>
     </div>
-    <p class="hint">👇 Psst, two of them already live here. Click one, or pick it up and drop it.</p>
+    <p class="hint">Try it right here: <b>select some text</b> · <b>hold Shift</b> and move the mouse 🔴 · <b>Alt+click</b> to drop food · <b>drag and throw</b> a pet</p>
   </div>
 
   <section id="adopt">
@@ -148,6 +151,13 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
           <div class="field"><label class="label" for="size">Size: <span id="size-val">3</span>×</label><input type="range" id="size" min="2" max="5" value="3"></div>
         </div>
         <div class="field"><label class="label" for="say">What it says (optional, separate with |)</label><input type="text" id="say" maxlength="160" placeholder="Welcome to my site!|Check out my work"></div>
+        <div class="row">
+          <div class="field"><label class="label" for="outfit">Outfit</label>
+            <select id="outfit" class="sel"><option value="auto">Automatic by date</option><option value="none">None</option><option value="santa">Santa hat</option><option value="party">Party hat</option><option value="crown">Crown</option><option value="uae">UAE flag</option><option value="ramadan">Ramadan lantern</option><option value="witch">Witch hat</option></select></div>
+          <div class="field"><span class="label">Page content</span><label class="check"><input type="checkbox" id="climb" checked> Climb &amp; jump on my page</label></div>
+        </div>
+        <div class="field"><label class="label" for="g-sel">Tour guide (optional): the pet walks to an element and points at it</label>
+          <div class="row"><input type="text" id="g-sel" placeholder="#contact" maxlength="80"><input type="text" id="g-msg" placeholder="Click here for a free quote!" maxlength="80"></div></div>
         <button class="btn primary" id="try" type="button">✨ Try it here</button>
       </div>
       <div class="card">
@@ -156,23 +166,56 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
         <div class="code-actions">
           <button class="btn primary" id="copy" type="button">📋 Copy code</button>
         </div>
-        <p class="sub" style="font-size:14px">Works on any website: plain HTML, WordPress, Shopify, Wix (custom code), React, Next.js. No sign-up and no tracking, just one small 20 KB script.</p>
+        <p class="sub" style="font-size:14px">Works on any website: plain HTML, WordPress, Shopify, Wix (custom code), React, Next.js. No sign-up and no tracking, just one small script (about 15 KB gzipped).</p>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>What it does</h2>
+    <h2>It lives <em style="font-style:normal;color:var(--accent)">in</em> your page</h2>
+    <p class="sub">Most website pets just walk along the bottom. Desk Pet treats your page like a level in a game: every heading, paragraph, image and button is something to stand on.</p>
     <div class="traits">
-      <div class="trait"><b>🚶 Wanders</b><span>Strolls along the bottom of the page and turns around at the edges.</span></div>
-      <div class="trait"><b>💖 Loves pets</b><span>Click it for hearts and a happy jump.</span></div>
-      <div class="trait"><b>✋ Can be carried</b><span>Drag it anywhere and let go. It drops back down to the floor.</span></div>
-      <div class="trait"><b>👀 Curious</b><span>Move your cursor near the bottom and it walks over to see.</span></div>
-      <div class="trait"><b>😴 Naps</b><span>After 30 seconds with no activity it curls up and sleeps (zzz). It wakes up when you come close.</span></div>
-      <div class="trait"><b>💬 Talks</b><span>Says little things now and then, or your own lines.</span></div>
-      <div class="trait"><b>⤴ Jumps</b><span>Double-click it to make it jump.</span></div>
-      <div class="trait"><b>♿ Polite</b><span>If the visitor prefers reduced motion, it just sits and naps. It never blocks clicks on your page.</span></div>
+      <div class="trait"><b>🧗 Climbs your content</b><span>Stands on the letters of your headings and jumps from paragraph to paragraph with real physics.</span></div>
+      <div class="trait"><b>📖 Reads with you</b><span>Scroll the page and it hops along to the heading you're reading.</span></div>
+      <div class="trait"><b>🖍️ Sits on selections</b><span>Select a sentence and the cat walks over and sits right on it, like cats do.</span></div>
+      <div class="trait"><b>🔴 Laser pointer</b><span>Hold Shift and move the mouse. Cats go crazy for it and dogs join in. The camel couldn't care less.</span></div>
+      <div class="trait"><b>🎯 Thrown with physics</b><span>Drag it and fling it. It flies, bounces off the edges and lands on whatever is below.</span></div>
+      <div class="trait"><b>🍖 Hunger &amp; mood</b><span>Alt+click drops food: a fish, a bone or dates. It runs to eat, and remembers how you treat it.</span></div>
+      <div class="trait"><b>👀 Watches you type</b><span>Start typing in a form and it hops onto the field to keep you company.</span></div>
+      <div class="trait"><b>🌙 Knows the date</b><span>Wears a Ramadan lantern, Eid party hat, UAE National Day flag, Santa hat or Halloween hat automatically, and gets sleepy late at night.</span></div>
+      <div class="trait"><b>👋 Social</b><span>Two pets on one page meet, say hi and nap together.</span></div>
+      <div class="trait"><b>🧭 Tour guide</b><span>Site owners can send the pet to a button, like "Click here for a quote!". Then it points the way.</span></div>
+      <div class="trait"><b>🎉 Reacts to events</b><span>It celebrates when a form is sent, cheers up lost visitors on a 404 page and says "wait, don't go!" when someone leaves.</span></div>
+      <div class="trait"><b>♿ Polite</b><span>Shadow DOM keeps it isolated, it never blocks your page, and it stays calm for visitors who prefer reduced motion.</span></div>
     </div>
+  </section>
+
+  <section>
+    <h2>Three personalities</h2>
+    <div class="traits">
+      <div class="trait"><b>🐈 Cat</b><span>The climber. It leaps high, always wants the highest heading, sits on your selected text and is obsessed with the laser.</span></div>
+      <div class="trait"><b>🐕 Dog</b><span>The runner. It's fast, follows you everywhere, gets random zoomies and is happy to be thrown again and again.</span></div>
+      <div class="trait"><b>🐪 Camel</b><span>The calm one. It walks slowly, rarely jumps, takes long desert naps and greets you with "Marhaba!".</span></div>
+    </div>
+  </section>
+
+  <section id="desktop">
+    <h2>Desk Pet for your desktop 🖥️</h2>
+    <p class="sub">The same pet, now on your computer. It walks along your taskbar, jumps onto your open windows and looks after you while you work.</p>
+    <div class="traits">
+      <div class="trait"><b>🪟 Window hopping</b><span>Climbs on top of your open windows and rides along when you move them (Windows).</span></div>
+      <div class="trait"><b>⏸️ Break time</b><span>Every 50 minutes (you choose) the pet sits in the middle of a calm screen with a countdown.</span></div>
+      <div class="trait"><b>🔒 Strict mode</b><span>For when you really need it: no skip button until the break is over.</span></div>
+      <div class="trait"><b>💧 Water &amp; 👀 eyes</b><span>Reminds you to drink water and to rest your eyes (20-20-20).</span></div>
+      <div class="trait"><b>🍅 Focus sessions</b><span>A Pomodoro timer: the pet naps in the corner while you focus, then calls you for a break.</span></div>
+      <div class="trait"><b>😴 Knows you're away</b><span>Falls asleep when you leave the computer and greets you when you come back.</span></div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn primary" href="https://github.com/Sahil-Zaini/desk-pet/releases/latest" target="_blank" rel="noopener">⬇ Download for Windows</a>
+      <a class="btn" href="https://github.com/Sahil-Zaini/desk-pet/releases/latest" target="_blank" rel="noopener">macOS</a>
+      <a class="btn" href="https://github.com/Sahil-Zaini/desk-pet/releases/latest" target="_blank" rel="noopener">Linux</a>
+    </div>
+    <p class="hint">Free and open source. Windows may show "Windows protected your PC" because the app isn't code-signed yet. Click <b>More info → Run anyway</b>.</p>
   </section>
 
   <section>
@@ -206,7 +249,7 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
   };
   var DEFAULT_NAME = { cat: "Mishmish", camel: "Habibi", dog: "Biscuit" };
   var FLOOR = 18;
-  var cfg = { pet: "camel", color: "sand", name: "Habibi", size: 3, say: "" };
+  var cfg = { pet: "camel", color: "sand", name: "Habibi", size: 3, say: "", outfit: "auto", climb: true, gsel: "", gmsg: "" };
 
   function toast(t) { var el = $("toast"); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(function () { el.hidden = true; }, 2000); }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
@@ -232,6 +275,10 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
   });
   $("name").addEventListener("input", function () { cfg.name = this.value.trim(); sync(); });
   $("say").addEventListener("input", function () { cfg.say = this.value.trim(); sync(); });
+  $("outfit").addEventListener("change", function () { cfg.outfit = this.value; sync(); });
+  $("climb").addEventListener("change", function () { cfg.climb = this.checked; sync(); });
+  $("g-sel").addEventListener("input", function () { cfg.gsel = this.value.trim(); sync(); });
+  $("g-msg").addEventListener("input", function () { cfg.gmsg = this.value.trim(); sync(); });
   $("size").addEventListener("input", function () { cfg.size = +this.value; $("size-val").textContent = this.value; sync(); });
 
   function sync() {
@@ -247,6 +294,9 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
     if (cfg.name) attrs.push(["data-name", cfg.name]);
     if (cfg.size !== 3) attrs.push(["data-size", String(cfg.size)]);
     if (cfg.say) attrs.push(["data-say", cfg.say]);
+    if (cfg.outfit !== "auto") attrs.push(["data-outfit", cfg.outfit]);
+    if (!cfg.climb) attrs.push(["data-climb", "false"]);
+    if (cfg.gsel && cfg.gmsg) attrs.push(["data-guide", cfg.gsel + "|" + cfg.gmsg]);
     var plain = "<script " + attrs.map(function (a) { return a[0] + '="' + a[1].replace(/"/g, "&quot;") + '"'; }).join("\n        ") + "\n        defer></" + "script>";
     $("code").dataset.plain = plain;
     $("code").innerHTML = '<span class="t">&lt;script</span> ' + attrs.map(function (a) { return '<span class="a">' + a[0] + '</span>=<span class="v">"' + esc(a[1]) + '"</span>'; }).join("\n        ") + '\n        <span class="a">defer</span><span class="t">&gt;&lt;/script&gt;</span>';
@@ -255,7 +305,7 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
 
   $("try").addEventListener("click", function () {
     DeskPet.removeAll();
-    DeskPet.spawn({ pet: cfg.pet, color: cfg.color, name: cfg.name, size: cfg.size, say: cfg.say, bottom: FLOOR });
+    DeskPet.spawn({ pet: cfg.pet, color: cfg.color, name: cfg.name, size: cfg.size, say: cfg.say, outfit: cfg.outfit, climb: cfg.climb, guide: cfg.gsel && cfg.gmsg ? cfg.gsel + "|" + cfg.gmsg : "", bottom: FLOOR });
     toast((cfg.name || "Your pet") + " moved in. Look down 👇");
   });
   $("copy").addEventListener("click", function () {
@@ -296,8 +346,8 @@ footer { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-b
   // logo + two residents
   DeskPet._paint($("logo"), "cat", "ginger", "idle", 0);
   sync();
-  DeskPet.spawn({ pet: "camel", name: "Habibi", bottom: FLOOR });
-  DeskPet.spawn({ pet: "cat", color: "ginger", name: "Mishmish", bottom: FLOOR });
+  DeskPet.spawn({ pet: "camel", name: "Habibi", bottom: FLOOR, x: 60 });
+  DeskPet.spawn({ pet: "cat", color: "ginger", name: "Mishmish", bottom: FLOOR, x: Math.max(200, innerWidth - 260), guide: "#try|Press this to try your own pet ✨;;.btn[href*=releases]|Get me on your desktop too!" });
 })();
 </script>
 </body>
